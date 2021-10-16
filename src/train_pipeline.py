@@ -22,37 +22,28 @@ def train_pipeline(
     logger.info(f"Model is {training_pipeline_params.train_params.model_type}")
 
     data = read_data(training_pipeline_params.path_config.input_data_path)
+    data_transformed = prepare_dataset(data, training_pipeline_params.feature_params)
 
-    train_df, test_df = split_train_val_data(data, training_pipeline_params.splitting_params)
-    #logger.info("Start transformer building...")
-    #transformer = build_transformer(training_pipeline_params.feature_params)
+    logger.info("Start transformer building...")
 
-    #transformer.fit(train_df)
-    #save_pkl_file(transformer, training_pipeline_params.path_config.output_transformer_path)
-
-    #train_features = pd.DataFrame(transformer.transform(train_df))
+    transformer = build_transformer(training_pipeline_params.feature_params)
+    transformer.fit(data_transformed)
+    train_df, test_df = split_train_val_data(data_transformed, training_pipeline_params.splitting_params)
 
     train_target = get_target(train_df, training_pipeline_params.feature_params)
-    #TODO передавать актуальные параметры
-    train_df = prepare_dataset(train_df, training_pipeline_params.feature_params)
-
+    train_features = pd.DataFrame(transformer.transform(train_df))
 
     logger.info("Start model training..")
-    print(train_df.shape, train_target.shape)
 
     model = train_model(
-        train_df, train_target, training_pipeline_params.train_params
-    )
+        train_features, train_target, training_pipeline_params.train_params)
+
     logger.info("Model training is done")
 
-    #test_features = pd.DataFrame(transformer.transform(test_df))
-
     test_target = get_target(test_df, training_pipeline_params.feature_params)
-    #TODO передавать актуальные параметры
-    test_df = prepare_dataset(test_df, training_pipeline_params.feature_params)
 
-
-    predicts = make_prediction(model, test_df)
+    test_features = pd.DataFrame(transformer.transform(test_df))
+    predicts = make_prediction(model, test_features)
 
     metrics = evaluate_model(predicts, test_target)
 
@@ -62,7 +53,8 @@ def train_pipeline(
     logger.info("Model is saved")
     logger.info(f"Metrics for test dataset is {metrics}")
 
-    save_pkl_file(model, training_pipeline_params.path_config.output_model_path)
+    save_pkl_file(model, training_pipeline_params.path_config.output_model_path +
+                  training_pipeline_params.train_params.model_type + '.pkl')
 
     return metrics
 

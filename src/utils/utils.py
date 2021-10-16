@@ -6,7 +6,7 @@ import pandas as pd
 
 
 def read_data(path: str) -> pd.DataFrame:
-    data = pd.read_csv(path, sep ='\t')
+    data = pd.read_csv(path, sep='\t')
     return data
 
 

@@ -3,3 +3,4 @@ defaults:
   - splitting_params: splitting_params
   - train_params: rf
   - feature_params: features
+  - optimizer_params: optimizer_params

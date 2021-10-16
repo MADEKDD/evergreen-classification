@@ -10,7 +10,7 @@ from sklearn.metrics import roc_auc_score, accuracy_score, f1_score
 SklearnClassifierModel = Union[RandomForestClassifier, LogisticRegression]
 
 
-def make_prediction(model: SklearnClassifierModel, features: pd.Series) -> np.ndarray:
+def make_prediction(model: SklearnClassifierModel, features: pd.DataFrame) -> np.ndarray:
     predicts = model.predict(features)
     return predicts
 
