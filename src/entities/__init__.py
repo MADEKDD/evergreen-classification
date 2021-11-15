@@ -1,6 +1,6 @@
 from .feature_params import FeatureParams
 from .split_params import SplittingParams
-from .train_params import LogRegParams, RandomForestParams
+from .train_params import LogRegParams, RandomForestParams, MLPParams
 from .train_pipeline_params import (
     TrainingPipelineParamsSchema,
     TrainingPipelineParams,
@@ -17,6 +17,7 @@ __all__ = [
     "TrainingPipelineParamsSchema",
     "LogRegParams",
     "RandomForestParams",
+    "MLPParams",
     "PredictingPipelineParams",
     "PathParams"
 ]

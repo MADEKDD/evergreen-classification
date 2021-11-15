@@ -17,4 +17,10 @@ class RandomForestParams:
     random_state: int = field(default=21)
 
 
+@dataclass()
+class MLPParams:
+    model_type: str = field(default="MLPClassifier")
+    hidden_layer_sizes: str = field(default="128")
+    max_iter: int = field(default=300)
+    random_state: int = field(default=21)
 
